@@ -34,6 +34,7 @@ return {
         'RSPlot',
         'RSaveClose',
       },
+      external_term = 'tmux split-window -hf',
     }
     -- Check if the environment variable "R_AUTO_START" exists.
     -- If using fish shell, you could put in your config.fish:

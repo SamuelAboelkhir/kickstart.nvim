@@ -580,6 +580,16 @@ require('lazy').setup({
           -- or a suggestion from your LSP for this to activate.
           map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
+          -- Code action but for the entire buffer, not just under cursor
+          map('grA', function()
+            vim.lsp.buf.code_action {
+              context = {
+                only = { 'source', 'quickfix' },
+                diagnostics = vim.diagnostic.get(0),
+              },
+            }
+          end, '[G]oto global code [A]ction', { 'n', 'x' })
+
           -- Find references for the word under your cursor.
           map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
@@ -709,19 +719,93 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {},
-        -- gopls = {},
+        gopls = {},
         pyright = {},
         rust_analyzer = {},
+        emmet_ls = {},
+        phpactor = {
+          init_options = {
+            ['language_server_phpstan.enabled'] = false,
+            ['language_server_psalm.enabled'] = false,
+          },
+        },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
+        tailwindcss = {
+          root_dir = function(fname)
+            local util = require 'lspconfig.util'
+            return util.root_pattern(
+              'tailwind.config.js',
+              'tailwind.config.ts',
+              'tailwind.config.cjs',
+              'tailwind.config.mjs',
+              'postcss.config.js',
+              'package.json'
+            )(fname)
+          end,
+          settings = {
+            tailwindCSS = {
+              validate = true,
+              lint = {
+                cssConflict = 'warning',
+                invalidApply = 'error',
+                invalidScreen = 'error',
+                invalidTailwindDirective = 'error',
+                invalidVariant = 'error',
+                recommendedVariantOrder = 'warning',
+              },
+              classAttributes = {
+                'class',
+                'className',
+                'class:list',
+                'classList',
+                'ngClass',
+              },
+              -- Only scan relevant files
+              experimental = {
+                classRegex = {
+                  'tw`([^`]*)',
+                  'tw="([^"]*)',
+                  'tw={"([^"}]*)',
+                  'tw\\.\\w+`([^`]*)',
+                  'tw\\(.*?\\)`([^`]*)',
+                },
+              },
+            },
+          },
+          -- Only attach to files that actually need Tailwind
+          filetypes = {
+            'html',
+            'css',
+            'scss',
+            'javascript',
+            'javascriptreact',
+            'typescript',
+            'typescriptreact',
+            'vue',
+            'svelte',
+          },
+          init_options = {
+            userLanguages = {
+              eelixir = 'html-eex',
+              eruby = 'erb',
+              htmlangular = 'html',
+              templ = 'html',
+            },
+          },
+        },
+        -- Remove ts_ls from your servers table and add this plugin:
+        -- Plugin configuration
+
         ts_ls = {
           init_options = {
             preferences = {
-              includePackageJsonAutoImports = 'on',
+              renameMatchingJsxTags = true,
+              includePackageJsonAutoImports = 'auto',
               includeCompletionsForModuleExports = true,
               includeCompletionsWithInsertText = true,
               -- These help with workspace diagnostics
@@ -733,20 +817,20 @@ require('lazy').setup({
               includeInlayFunctionLikeReturnTypeHints = true,
             },
             -- This is important for workspace-wide analysis
-            maxTsServerMemory = 4096,
+            maxTsServerMemory = 1024,
           },
           settings = {
             typescript = {
               validate = { enable = true },
-              format = { enable = true },
+              format = { enable = false },
               -- Enable project-wide semantic analysis
               preferences = {
-                includePackageJsonAutoImports = 'on',
+                includePackageJsonAutoImports = 'auto',
               },
             },
             javascript = {
               validate = { enable = true },
-              format = { enable = true },
+              format = { enable = false },
             },
           },
           -- Enhanced root directory detection
@@ -779,7 +863,6 @@ require('lazy').setup({
             end
           end,
         },
-        --
 
         lua_ls = {
           -- cmd = { ... },
@@ -822,6 +905,8 @@ require('lazy').setup({
         }, server_config or {})
 
         require('lspconfig')[server_name].setup(final_config)
+        -- vim.lsp.config[server_name] = final_config
+        -- vim.lsp.enable(server_name)
       end
     end,
   },
@@ -1035,7 +1120,27 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'r',
+        'rnoweb',
+        'yaml',
+        'javascript',
+        'typescript',
+        'tsx',
+        -- 'jsx',
+        'css',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
