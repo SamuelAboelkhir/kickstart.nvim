@@ -834,15 +834,17 @@ require('lazy').setup({
             },
           },
           -- Enhanced root directory detection
+          -- cmd = { vim.fn.expand '~/.local/share/nvim/mason/bin/typescript-language-server', '--stdio' },
+          -- filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
           root_dir = function(fname)
             local util = require 'lspconfig.util'
             return util.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json', '.git')(fname)
           end,
           -- This function helps with workspace diagnostics
-          on_attach = function(client, bufnr)
+          LspAttach = function(client, bufnr)
             -- Your existing on_attach logic here
 
-            -- For better workspace diagnostics, we'll load some key files
+            -- For better workspace diagnostic€ý,s€ý,, we'll load some key files
             if client.name == 'ts_ls' then
               vim.defer_fn(function()
                 -- Find and briefly open key TypeScript/React files
@@ -905,8 +907,11 @@ require('lazy').setup({
         }, server_config or {})
 
         require('lspconfig')[server_name].setup(final_config)
-        -- vim.lsp.config[server_name] = final_config
-        -- vim.lsp.enable(server_name)
+        vim.lsp.config[server_name] = final_config
+      end
+
+      for server_name, _ in pairs(servers) do
+        vim.lsp.enable(server_name)
       end
     end,
   },
@@ -1094,6 +1099,10 @@ require('lazy').setup({
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
+
+      -- Restore the 's' key's delete functionality
+      vim.keymap.set('n', 's', 'cl')
+      vim.keymap.set('x', 's', 'c')
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
