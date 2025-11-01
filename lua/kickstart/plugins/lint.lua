@@ -7,8 +7,10 @@ return {
       local lint = require 'lint'
       lint.linters_by_ft = {
         markdown = { 'markdownlint' },
+        python = { 'ruff' },
       }
 
+      lint.linters.ruff = require 'lint.linters.ruff'
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
       -- instead set linters_by_ft like this:
       -- lint.linters_by_ft = lint.linters_by_ft or {}
@@ -55,6 +57,11 @@ return {
           end
         end,
       })
+
+      -- Manual lint keymap
+      vim.keymap.set('n', '<leader>L', function()
+        lint.try_lint()
+      end, { desc = 'Trigger linting for current file' })
     end,
   },
 }

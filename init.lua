@@ -582,13 +582,23 @@ require('lazy').setup({
 
           -- Code action but for the entire buffer, not just under cursor
           map('grA', function()
+            -- Save current cursor position
+            local cursor_pos = vim.api.nvim_win_get_cursor(0)
+
+            -- Select entire buffer
+            vim.cmd 'normal! ggVG'
+
+            -- Run code action on selection
             vim.lsp.buf.code_action {
               context = {
                 only = { 'source', 'quickfix' },
                 diagnostics = vim.diagnostic.get(0),
               },
             }
-          end, '[G]oto global code [A]ction', { 'n', 'x' })
+
+            -- Restore cursor position
+            vim.api.nvim_win_set_cursor(0, cursor_pos)
+          end, '[G]oto global code [A]ction')
 
           -- Find references for the word under your cursor.
           map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
@@ -720,7 +730,8 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         gopls = {},
-        pyright = {},
+        basedpyright = {},
+        ruff = {},
         rust_analyzer = {},
         emmet_ls = {},
         phpactor = {
@@ -949,7 +960,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        python = { 'isort', 'black' },
+        python = { 'ruff_fix', 'black', 'isort' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
