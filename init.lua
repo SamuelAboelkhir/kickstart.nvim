@@ -84,6 +84,8 @@ I hope you enjoy your Neovim journey,
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 
+-- Set the termguicolors to get nvim to stop telling me I have an error
+vim.opt.termguicolors = true
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -734,6 +736,7 @@ require('lazy').setup({
         ruff = {},
         rust_analyzer = {},
         emmet_ls = {},
+        zls = {},
         phpactor = {
           init_options = {
             ['language_server_phpstan.enabled'] = false,
@@ -844,13 +847,10 @@ require('lazy').setup({
               format = { enable = false },
             },
           },
-          -- Enhanced root directory detection
-          -- cmd = { vim.fn.expand '~/.local/share/nvim/mason/bin/typescript-language-server', '--stdio' },
-          -- filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
-          root_dir = function(fname)
-            local util = require 'lspconfig.util'
-            return util.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json', '.git')(fname)
-          end,
+          -- root_dir = function(fname)
+          --   local util = require 'lspconfig.util'
+          --   return util.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json', '.git')(fname)
+          -- end,
           -- This function helps with workspace diagnostics
           LspAttach = function(client, bufnr)
             -- Your existing on_attach logic here
@@ -917,7 +917,7 @@ require('lazy').setup({
           capabilities = capabilities,
         }, server_config or {})
 
-        require('lspconfig')[server_name].setup(final_config)
+        -- require('lspconfig')[server_name].setup(final_config)
         vim.lsp.config[server_name] = final_config
       end
 
@@ -1086,7 +1086,7 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      -- vim.cmd.colorscheme 'tokyonight-night'
     end,
   },
 
@@ -1201,6 +1201,7 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   { import = 'custom.plugins' },
+  { import = 'themes' },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
