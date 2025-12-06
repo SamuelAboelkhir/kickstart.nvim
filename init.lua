@@ -366,6 +366,7 @@ require('lazy').setup({
         { '<leader>l', group = '[L]ive session' },
         { '<leader>H', group = '[H]arpoon' },
         { '<leader>D', group = '[D]ebug' },
+        { '<leader>c', group = 'Do[c]s' },
       },
     },
   },
