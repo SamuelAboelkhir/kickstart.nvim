@@ -95,6 +95,7 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
+        'js-debug-adapter',
       },
     }
 
@@ -130,7 +131,7 @@ return {
       local tp = 'Dap' .. type
       local hl = (type == 'Stopped') and 'DapStop' or 'DapBreak'
       vim.fn.sign_define(tp, { text = icon, texthl = hl, numhl = hl })
-     end
+    end
 
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
@@ -144,5 +145,39 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    -- NOTE: This doesn't work for JS/TS anymore but I'm leaving it as a template for other debuggers
+    dap.adapters = {
+      ['pwa-node'] = {
+        type = 'server',
+        host = '127.0.0.1',
+        port = '${port}',
+        executable = {
+          command = 'js-debug-adapter',
+          args = {
+            '${port}',
+          },
+        },
+      },
+    }
+
+    for _, language in ipairs { 'typescript', 'javascript' } do
+      dap.configurations[language] = {
+        {
+          type = 'pwa-node',
+          request = 'launch',
+          name = 'Launch file',
+          program = '${file}',
+          cwd = '${workspaceFolder}',
+        },
+        {
+          type = 'pwa-node',
+          request = 'attach',
+          name = 'Attach to process ID',
+          processId = require('dap.utils').pick_process,
+          cwd = '${workspaceFolder}',
+        },
+      }
+    end
   end,
 }
