@@ -955,7 +955,7 @@ require('lazy').setup({
         else
           return {
             timeout_ms = 500,
-            lsp_format = 'fallback',
+            -- lsp_format = 'fallback',
           }
         end
       end,
@@ -1116,6 +1116,9 @@ require('lazy').setup({
       -- Restore the 's' key's delete functionality
       vim.keymap.set('n', 's', 'cl')
       vim.keymap.set('x', 's', 'c')
+
+      -- Easier return to normal mode
+      vim.keymap.set('i', 'jk', '<C-[>')
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
