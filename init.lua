@@ -222,6 +222,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+vim.api.nvim_create_autocmd('FocusGained', {
+  pattern = 'mycolorscheme.lua',
+  callback = function()
+    vim.schedule(function()
+      vim.cmd.colorscheme(vim.g.current_theme)
+      vim.notify('Colorscheme reloaded', vim.log.levels.INFO)
+    end)
+  end,
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -368,6 +378,7 @@ require('lazy').setup({
         { '<leader>D', group = '[D]ebug' },
         { '<leader>c', group = 'Do[c]s' },
         { '<leader>o', group = '[O]pen code' },
+        { '<leader>r', group = '[R]ename buffer' },
       },
     },
   },
@@ -633,6 +644,9 @@ require('lazy').setup({
           --  the definition of its *type*, not where it was *defined*.
           map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
 
+          -- Global rename
+          map('<leader>rn', vim.lsp.buf.rename, 'Rename buffers globally')
+
           -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
           ---@param client vim.lsp.Client
           ---@param method vim.lsp.protocol.Method
@@ -752,48 +766,6 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         tailwindcss = {
-          root_dir = function(fname)
-            local util = require 'lspconfig.util'
-            return util.root_pattern(
-              'tailwind.config.js',
-              'tailwind.config.ts',
-              'tailwind.config.cjs',
-              'tailwind.config.mjs',
-              'postcss.config.js',
-              'package.json'
-            )(fname)
-          end,
-          settings = {
-            tailwindCSS = {
-              validate = true,
-              lint = {
-                cssConflict = 'warning',
-                invalidApply = 'error',
-                invalidScreen = 'error',
-                invalidTailwindDirective = 'error',
-                invalidVariant = 'error',
-                recommendedVariantOrder = 'warning',
-              },
-              classAttributes = {
-                'class',
-                'className',
-                'class:list',
-                'classList',
-                'ngClass',
-              },
-              -- Only scan relevant files
-              experimental = {
-                classRegex = {
-                  'tw`([^`]*)',
-                  'tw="([^"]*)',
-                  'tw={"([^"}]*)',
-                  'tw\\.\\w+`([^`]*)',
-                  'tw\\(.*?\\)`([^`]*)',
-                },
-              },
-            },
-          },
-          -- Only attach to files that actually need Tailwind
           filetypes = {
             'html',
             'css',
@@ -935,7 +907,7 @@ require('lazy').setup({
     cmd = { 'ConformInfo' },
     keys = {
       {
-        '<leader>f',
+        '<leader>F',
         function()
           require('conform').format { async = true, lsp_format = 'fallback' }
         end,
@@ -955,7 +927,7 @@ require('lazy').setup({
         else
           return {
             timeout_ms = 500,
-            -- lsp_format = 'fallback',
+            lsp_format = 'fallback',
           }
         end
       end,
@@ -1048,9 +1020,13 @@ require('lazy').setup({
       },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'lazydev' },
+        default = { 'lsp', 'path', 'snippets', 'lazydev', 'buffer' },
+        per_filetype = {
+          sql = { 'dadbod' },
+        },
         providers = {
           lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
+          dadbod = { module = 'vim_dadbod_completion.blink' },
         },
       },
 
