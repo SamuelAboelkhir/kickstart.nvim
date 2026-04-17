@@ -83,7 +83,7 @@ I hope you enjoy your Neovim journey,
 
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
-
+vim.opt.runtimepath:prepend(vim.fn.stdpath 'data' .. '/lazy')
 -- Set the termguicolors to get nvim to stop telling me I have an error
 vim.opt.termguicolors = true
 -- Set <space> as the leader key
@@ -1143,9 +1143,10 @@ require('lazy').setup({
         'css',
       },
       -- Autoinstall languages that are not installed
-      auto_install = true,
+      auto_install = false,
       highlight = {
         enable = true,
+        disable = { 'markdown', 'markdown_inline' },
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
