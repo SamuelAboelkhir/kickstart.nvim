@@ -5,4 +5,9 @@
 
 ---@module 'lazy'
 ---@type LazySpec
-return {}
+return {
+  require 'custom.plugins.ui',
+  require 'custom.plugins.coding',
+  require 'custom.plugins.debuging',
+  require 'custom.plugins.utils',
+}
