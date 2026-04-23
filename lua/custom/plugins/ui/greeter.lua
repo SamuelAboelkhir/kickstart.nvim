@@ -16,7 +16,6 @@ return {
     config = function()
       local builtin = require 'telescope.builtin'
       local dashboard = require 'alpha.themes.dashboard'
-      local session = require 'session_manager'
       require('alpha').setup(require('alpha.themes.dashboard').config)
       vim.keymap.set('n', '<leader>h', function()
         vim.cmd 'Alpha'
@@ -42,7 +41,7 @@ return {
         dashboard.button('r', '  Frecency/MRU', '<cmd>Telescope frecency<cr>'),
         dashboard.button('g', '󰈬  Find word', builtin.live_grep),
         dashboard.button('m', '  Jump to bookmarks'),
-        dashboard.button('l', '  Open last session', '<cmd>SessionManager load_last_session<cr>'),
+        dashboard.button('l', '  Open last session', [[<cmd> lua require("persistence").load() <cr>]]),
         dashboard.button('q', '󰅚  Quit NVIM', ':qa<CR>'),
       }
     end,

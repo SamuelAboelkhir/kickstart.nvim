@@ -26,7 +26,7 @@ return {
         always_show_bufferline = false,
         diagnostics_indicator = function(_, _, diag)
           local icons = U.icons.diagnostics
-          return (diag.error and icons.error .. diag.error .. ' ' or '') .. (diag.warning and icons.warning .. diag.warning or '')
+          return (diag.Error and icons.Error .. diag.Error .. ' ' or '') .. (diag.Warning and icons.Warning .. diag.Warning or '')
         end,
         offsets = {
           {

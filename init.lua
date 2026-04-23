@@ -87,16 +87,17 @@ P.S. You can delete this when you're done too. It's your config now! :)
 -- [[ Setting options ]]
 require 'options'
 
+-- [[ Install `lazy.nvim` plugin manager ]]
+require 'lazy-bootstrap'
+
+-- [[ Configure and install plugins ]]
+require 'lazy-plugins'
+
 -- [[ Basic Keymaps ]]
 require 'keymaps'
 
 -- [[ Basic Autocommands ]]
 require 'autocommands'
 
--- [[ Install `lazy.nvim` plugin manager ]]
-require 'lazy-bootstrap'
-
--- [[ Configure and install plugins ]]
-require 'lazy-plugins'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

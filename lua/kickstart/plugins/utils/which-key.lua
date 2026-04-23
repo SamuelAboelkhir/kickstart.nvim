@@ -12,38 +12,6 @@ return {
       icons = {
         -- set icon mappings to true if you have a Nerd Font
         mappings = vim.g.have_nerd_font,
-        -- If you are using a Nerd Font: set icons.keys to an empty table which will use the
-        -- default which-key.nvim defined Nerd Font icons, otherwise define a string table
-        keys = vim.g.have_nerd_font and {} or {
-          Up = '<Up> ',
-          Down = '<Down> ',
-          Left = '<Left> ',
-          Right = '<Right> ',
-          C = '<C-â¦> ',
-          M = '<M-â¦> ',
-          D = '<D-â¦> ',
-          S = '<S-â¦> ',
-          CR = '<CR> ',
-          Esc = '<Esc> ',
-          ScrollWheelDown = '<ScrollWheelDown> ',
-          ScrollWheelUp = '<ScrollWheelUp> ',
-          NL = '<NL> ',
-          BS = '<BS> ',
-          Space = '<Space> ',
-          Tab = '<Tab> ',
-          F1 = '<F1>',
-          F2 = '<F2>',
-          F3 = '<F3>',
-          F4 = '<F4>',
-          F5 = '<F5>',
-          F6 = '<F6>',
-          F7 = '<F7>',
-          F8 = '<F8>',
-          F9 = '<F9>',
-          F10 = '<F10>',
-          F11 = '<F11>',
-          F12 = '<F12>',
-        },
       },
 
       -- Document existing key chains
@@ -58,7 +26,48 @@ return {
         { '<leader>D', group = '[D]ebug' },
         { '<leader>c', group = 'Do[c]s' },
         { '<leader>o', group = '[O]pen code' },
-        { '<leader>r', group = '[R]ename buffer' },
+        { '<leader>b', group = '[B]uffers' },
+        { '<leader>q', group = 'Session Management' },
+        { '<leader>u', group = '[U]i toggles' },
+        { '<leader><tab>', group = 'Tabs' },
+        { '[', group = 'prev' },
+        { ']', group = 'next' },
+        { 'g', group = 'goto' },
+        { 'gs', group = 'surround' },
+        { 'z', group = 'fold' },
+        {
+          '<leader>b',
+          group = 'buffer',
+          expand = function()
+            return require('which-key.extras').expand.buf()
+          end,
+        },
+        {
+          '<leader>w',
+          group = 'windows',
+          proxy = '<c-w>',
+          expand = function()
+            return require('which-key.extras').expand.win()
+          end,
+        },
+        -- better descriptions
+        { 'gx', desc = 'Open with system app' },
+      },
+    },
+    keys = {
+      {
+        '<leader>?',
+        function()
+          require('which-key').show { global = false }
+        end,
+        desc = 'Buffer Keymaps (which-key)',
+      },
+      {
+        '<leader><c-h>',
+        function()
+          require('which-key').show { keys = '<leader>', loop = true }
+        end,
+        desc = 'Window Hydra Mode (which-key)',
       },
     },
   },
