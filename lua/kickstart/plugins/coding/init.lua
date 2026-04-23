@@ -1,9 +1,10 @@
 ---@module 'lazy'
 ---@type LazySpec
+local submodulePath = 'kickstart.plugins.coding.'
 return {
-  require 'kickstart.plugins.coding.autopairs',
-  require 'kickstart.plugins.coding.blink-cmp',
-  require 'kickstart.plugins.coding.gitsigns',
-  require 'kickstart.plugins.coding.lspconfig',
-  require 'kickstart.plugins.coding.treesitter',
+  require(submodulePath .. 'autopairs'),
+  require(submodulePath .. 'blink-cmp'),
+  require(submodulePath .. 'gitsigns'),
+  require(submodulePath .. 'lspconfig'),
+  require(submodulePath .. 'treesitter'),
 }

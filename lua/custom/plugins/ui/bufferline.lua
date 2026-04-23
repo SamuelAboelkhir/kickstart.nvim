@@ -1,3 +1,4 @@
+local U = require 'config.utils'
 return {
   {
     'akinsho/bufferline.nvim',
@@ -24,8 +25,8 @@ return {
         diagnostics = 'nvim_lsp',
         always_show_bufferline = false,
         diagnostics_indicator = function(_, _, diag)
-          local ret = (diag.error and icons.Error .. diag.error .. ' ' or '') .. (diag.warning and icons.Warn .. diag.warning or '')
-          return vim.trim(ret)
+          local icons = U.icons.diagnostics
+          return (diag.error and icons.error .. diag.error .. ' ' or '') .. (diag.warning and icons.warning .. diag.warning or '')
         end,
         offsets = {
           {

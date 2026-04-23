@@ -1,11 +1,12 @@
 ---@module 'lazy'
 ---@type LazySpec
+local submodulePath = 'custom.plugins.coding.'
 return {
-  require 'custom.plugins.coding.R-nvim',
-  require 'custom.plugins.coding.autotag',
-  require 'custom.plugins.coding.jdtls',
-  require 'custom.plugins.coding.markdown',
-  require 'custom.plugins.coding.lazygit',
-  require 'custom.plugins.coding.visual_multi',
-  -- require 'custom.plugins.coding.treesiter.lua',
+  require(submodulePath .. 'R-nvim'),
+  require(submodulePath .. 'autotag'),
+  require(submodulePath .. 'jdtls'),
+  require(submodulePath .. 'markdown'),
+  require(submodulePath .. 'lazygit'),
+  require(submodulePath .. 'visual_multi'),
+  -- require (submodulePath .. '.treesiter.lua'),
 }

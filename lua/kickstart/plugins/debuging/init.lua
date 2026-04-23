@@ -1,5 +1,6 @@
 ---@module 'lazy'
 ---@type LazySpec
+local submodulePath = 'kickstart.plugins.debuging.'
 return {
-  require 'kickstart.plugins.debuging.debug',
+  require(submodulePath .. 'debug'),
 }

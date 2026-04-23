@@ -1,13 +1,14 @@
 ---@module 'lazy'
 ---@type LazySpec
+local submodulePath = 'custom.plugins.utils.'
 return {
-  require 'custom.plugins.utils.dadbod',
-  require 'custom.plugins.utils.devdocs',
-  require 'custom.plugins.utils.harpoon',
-  require 'custom.plugins.utils.live-share',
-  require 'custom.plugins.utils.markmap',
-  require 'custom.plugins.utils.session-manager',
-  require 'custom.plugins.utils.spectre',
-  require 'custom.plugins.utils.vim-tmux-nav',
-  require 'custom.plugins.coding.visual_multi',
+  require(submodulePath .. 'dadbod'),
+  require(submodulePath .. 'devdocs'),
+  require(submodulePath .. 'harpoon'),
+  require(submodulePath .. 'live-share'),
+  require(submodulePath .. 'markmap'),
+  require(submodulePath .. 'session-manager'),
+  require(submodulePath .. 'spectre'),
+  require(submodulePath .. 'vim-tmux-nav'),
+  require(submodulePath .. 'snacks'),
 }

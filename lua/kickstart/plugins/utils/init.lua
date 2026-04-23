@@ -1,8 +1,9 @@
 ---@module 'lazy'
 ---@type LazySpec
+local submodulePath = 'kickstart.plugins.utils.'
 return {
-  require 'kickstart.plugins.utils.conform',
-  require 'kickstart.plugins.utils.telescope',
-  require 'kickstart.plugins.utils.lint',
-  require 'kickstart.plugins.utils.which-key',
+  require(submodulePath .. 'conform'),
+  require(submodulePath .. 'telescope'),
+  require(submodulePath .. 'lint'),
+  require(submodulePath .. 'which-key'),
 }

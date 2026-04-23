@@ -1,8 +1,9 @@
 ---@module 'lazy'
 ---@type LazySpec
+local submodulePath = 'kickstart.plugins.ui.'
 return {
-  require 'kickstart.plugins.ui.indent_line',
-  require 'kickstart.plugins.ui.mini',
-  require 'kickstart.plugins.ui.neo-tree',
-  require 'kickstart.plugins.ui.todo-comments',
+  require(submodulePath .. 'indent_line'),
+  require(submodulePath .. 'mini'),
+  require(submodulePath .. 'neo-tree'),
+  require(submodulePath .. 'todo-comments'),
 }

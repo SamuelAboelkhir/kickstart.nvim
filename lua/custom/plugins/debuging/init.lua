@@ -1,6 +1,7 @@
 ---@module 'lazy'
 ---@type LazySpec
+local submodulePath = 'custom.plugins.debuging.'
 return {
-  require 'custom.plugins.debuging.diagnostic',
-  require 'custom.plugins.debuging.trouble',
+  require(submodulePath .. '.diagnostic'),
+  require(submodulePath .. '.trouble'),
 }
