@@ -1,5 +1,3 @@
----@module 'lazy'
----@type LazySpec
 return {
   { -- Autoformat
     'stevearc/conform.nvim',
