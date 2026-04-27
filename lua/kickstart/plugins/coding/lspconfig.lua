@@ -170,6 +170,7 @@ return {
       ---@type table<string, vim.lsp.Config>
       local servers = {
         clangd = {},
+        eslint = {},
         gopls = {
           settings = {
             gopls = {
@@ -268,66 +269,94 @@ return {
         -- Remove ts_ls from your servers table and add this plugin:
         -- Plugin configuration
 
-        ts_ls = {
-          init_options = {
-            preferences = {
-              renameMatchingJsxTags = true,
-              includePackageJsonAutoImports = 'auto',
-              includeCompletionsForModuleExports = true,
-              includeCompletionsWithInsertText = true,
-              -- These help with workspace diagnostics
-              includeInlayParameterNameHints = 'all',
-              includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-              includeInlayFunctionParameterTypeHints = true,
-              includeInlayVariableTypeHints = true,
-              includeInlayPropertyDeclarationTypeHints = true,
-              includeInlayFunctionLikeReturnTypeHints = true,
-            },
-            -- This is important for workspace-wide analysis
-            maxTsServerMemory = 1024,
+        -- ts_ls = {
+        --   init_options = {
+        --     preferences = {
+        --       renameMatchingJsxTags = true,
+        --       includePackageJsonAutoImports = 'auto',
+        --       includeCompletionsForModuleExports = true,
+        --       includeCompletionsWithInsertText = true,
+        --       -- These help with workspace diagnostics
+        --       includeInlayParameterNameHints = 'all',
+        --       includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+        --       includeInlayFunctionParameterTypeHints = true,
+        --       includeInlayVariableTypeHints = true,
+        --       includeInlayPropertyDeclarationTypeHints = true,
+        --       includeInlayFunctionLikeReturnTypeHints = true,
+        --     },
+        --     -- This is important for workspace-wide analysis
+        --     maxTsServerMemory = 1024,
+        --   },
+        --   settings = {
+        --     typescript = {
+        --       validate = { enable = true },
+        --       format = { enable = false },
+        --       -- Enable project-wide semantic analysis
+        --       preferences = {
+        --         includePackageJsonAutoImports = 'auto',
+        --       },
+        --     },
+        --     javascript = {
+        --       validate = { enable = true },
+        --       format = { enable = false },
+        --     },
+        --   },
+        --   -- root_dir = function(fname)
+        --   --   local util = require 'lspconfig.util'
+        --   --   return util.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json', '.git')(fname)
+        --   -- end,
+        --   -- This function helps with workspace diagnostics
+        --   LspAttach = function(client, bufnr)
+        --     -- Your existing on_attach logic here
+        --
+        --     -- For better workspace diagnosticý,sý,, we'll load some key files
+        --     if client.name == 'ts_ls' then
+        --       vim.defer_fn(function()
+        --         -- Find and briefly open key TypeScript/React files
+        --         local handle = io.popen "find . -maxdepth 3 -name '*.tsx' -o -name '*.ts' | head -10"
+        --         if handle then
+        --           local result = handle:read '*a'
+        --           handle:close()
+        --
+        --           for file in result:gmatch '[^\r\n]+' do
+        --             if vim.fn.filereadable(file) == 1 then
+        --               -- Load the buffer without opening it
+        --               local buf = vim.fn.bufadd(file)
+        --               vim.fn.bufload(buf)
+        --             end
+        --           end
+        --         end
+        --       end, 2000)
+        --     end
+        --   end,
+        -- },
+
+        tsgo = {
+          -- explicitly add default filetypes, so that we can extend
+          -- them in related extras
+          filetypes = {
+            'javascript',
+            'javascriptreact',
+            'javascript.jsx',
+            'typescript',
+            'typescriptreact',
+            'typescript.tsx',
           },
           settings = {
             typescript = {
-              validate = { enable = true },
-              format = { enable = false },
-              -- Enable project-wide semantic analysis
-              preferences = {
-                includePackageJsonAutoImports = 'auto',
+              inlayHints = {
+                enumMemberValues = { enabled = true },
+                functionLikeReturnTypes = { enabled = false },
+                parameterNames = {
+                  enabled = 'literals',
+                  suppressWhenArgumentMatchesName = true,
+                },
+                parameterTypes = { enabled = true },
+                propertyDeclarationTypes = { enabled = true },
+                variableTypes = { enabled = false },
               },
             },
-            javascript = {
-              validate = { enable = true },
-              format = { enable = false },
-            },
           },
-          -- root_dir = function(fname)
-          --   local util = require 'lspconfig.util'
-          --   return util.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json', '.git')(fname)
-          -- end,
-          -- This function helps with workspace diagnostics
-          LspAttach = function(client, bufnr)
-            -- Your existing on_attach logic here
-
-            -- For better workspace diagnosticý,sý,, we'll load some key files
-            if client.name == 'ts_ls' then
-              vim.defer_fn(function()
-                -- Find and briefly open key TypeScript/React files
-                local handle = io.popen "find . -maxdepth 3 -name '*.tsx' -o -name '*.ts' | head -10"
-                if handle then
-                  local result = handle:read '*a'
-                  handle:close()
-
-                  for file in result:gmatch '[^\r\n]+' do
-                    if vim.fn.filereadable(file) == 1 then
-                      -- Load the buffer without opening it
-                      local buf = vim.fn.bufadd(file)
-                      vim.fn.bufload(buf)
-                    end
-                  end
-                end
-              end, 2000)
-            end
-          end,
         },
 
         stylua = {},

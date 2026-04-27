@@ -7,6 +7,10 @@ return {
       local lint = require 'lint'
       lint.linters_by_ft = {
         python = { 'ruff' },
+        javascript = { 'eslint' },
+        javascriptreact = { 'eslint' },
+        typescript = { 'eslint' },
+        typescriptreact = { 'eslint' },
       }
 
       lint.linters.ruff = require 'lint.linters.ruff'
