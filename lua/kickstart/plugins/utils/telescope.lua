@@ -147,6 +147,13 @@ return {
           -- Useful when you're not sure what type a variable is and you want to see
           -- the definition of its *type*, not where it was *defined*.
           vim.keymap.set('n', 'grt', builtin.lsp_type_definitions, { buffer = buf, desc = '[G]oto [T]ype Definition' })
+
+          vim.keymap.set('n', 'grTn', builtin.lsp_incoming_calls, { buffer = buf, desc = 'Shows who calls the function under the cursor' })
+
+          vim.keymap.set('n', 'grTp', builtin.lsp_outgoing_calls, { buffer = buf, desc = 'Shows who the function under the curser calls' })
+          -- TODO: Consider a full swap to snacks
+          vim.keymap.set('n', 'grTi', '<cmd>lua Snacks.picker.lsp_incoming_calls()<cr>', { desc = 'Incoming calls' })
+          vim.keymap.set('n', 'grTo', '<cmd>lua Snacks.picker.lsp_outgoing_calls()<cr>', { desc = 'Outgoing calls' })
         end,
       })
 

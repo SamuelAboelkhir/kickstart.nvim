@@ -98,7 +98,11 @@ return {
           map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
           -- Global rename
-          map('gNn', vim.lsp.buf.rename, 'Rename buffers globally')
+          map('grN', vim.lsp.buf.rename, 'Rename buffers globally')
+
+          -- map('grTi', vim.lsp.buf.incoming_calls, 'Shows who calls the function under the cursor')
+          --
+          -- map('grTo', vim.lsp.buf.outgoing_calls, 'Shows who the function under the curser calls')
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.

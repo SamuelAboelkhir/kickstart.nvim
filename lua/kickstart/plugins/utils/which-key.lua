@@ -19,6 +19,7 @@ return {
         { '<leader>g', group = '[G]it Hunk', mode = { 'n', 'v' } },
         { '<leader>d', group = '[D]iagnostics' },
         { 'gr', group = '[L]sp' },
+        { 'grT', group = '[T]rack callers/callees' },
         { '<leader>l', group = '[L]ive session' },
         { '<leader>H', group = '[H]arpoon' },
         { '<leader>D', group = '[D]ebug' },
