@@ -174,6 +174,7 @@ return {
       ---@type table<string, vim.lsp.Config>
       local servers = {
         clangd = {},
+        jsonls = {},
         eslint = {},
         gopls = {
           settings = {
@@ -273,6 +274,8 @@ return {
         -- Remove ts_ls from your servers table and add this plugin:
         -- Plugin configuration
 
+        -- Typescript LSPs, hope one finally works well
+
         -- ts_ls = {
         --   init_options = {
         --     preferences = {
@@ -335,7 +338,35 @@ return {
         --   end,
         -- },
 
-        tsgo = {
+        -- tsgo = {
+        --   -- explicitly add default filetypes, so that we can extend
+        --   -- them in related extras
+        --   filetypes = {
+        --     'javascript',
+        --     'javascriptreact',
+        --     'javascript.jsx',
+        --     'typescript',
+        --     'typescriptreact',
+        --     'typescript.tsx',
+        --   },
+        --   settings = {
+        --     typescript = {
+        --       inlayHints = {
+        --         enumMemberValues = { enabled = true },
+        --         functionLikeReturnTypes = { enabled = false },
+        --         parameterNames = {
+        --           enabled = 'literals',
+        --           suppressWhenArgumentMatchesName = true,
+        --         },
+        --         parameterTypes = { enabled = true },
+        --         propertyDeclarationTypes = { enabled = true },
+        --         variableTypes = { enabled = false },
+        --       },
+        --     },
+        --   },
+        -- },
+
+        vtsls = {
           -- explicitly add default filetypes, so that we can extend
           -- them in related extras
           filetypes = {
@@ -347,19 +378,87 @@ return {
             'typescript.tsx',
           },
           settings = {
+            complete_function_calls = true,
+            vtsls = {
+              enableMoveToFileCodeAction = true,
+              autoUseWorkspaceTsdk = true,
+              experimental = {
+                maxInlayHintLength = 30,
+                completion = {
+                  enableServerSideFuzzyMatch = true,
+                },
+              },
+            },
             typescript = {
+              updateImportsOnFileMove = { enabled = 'always' },
+              suggest = {
+                completeFunctionCalls = true,
+              },
               inlayHints = {
                 enumMemberValues = { enabled = true },
-                functionLikeReturnTypes = { enabled = false },
-                parameterNames = {
-                  enabled = 'literals',
-                  suppressWhenArgumentMatchesName = true,
-                },
+                functionLikeReturnTypes = { enabled = true },
+                parameterNames = { enabled = 'literals' },
                 parameterTypes = { enabled = true },
                 propertyDeclarationTypes = { enabled = true },
                 variableTypes = { enabled = false },
               },
             },
+          },
+          setup = {
+            vtsls = function(_, opts)
+              Snacks.util.lsp.on({ name = 'vtsls' }, function(buffer, client)
+                client.commands['_typescript.moveToFileRefactoring'] = function(command, ctx)
+                  ---@type string, string, lsp.Range
+                  local action, uri, range = unpack(command.arguments)
+
+                  local function move(newf)
+                    client:request('workspace/executeCommand', {
+                      command = command.command,
+                      arguments = { action, uri, range, newf },
+                    })
+                  end
+
+                  local fname = vim.uri_to_fname(uri)
+                  client:request('workspace/executeCommand', {
+                    command = 'typescript.tsserverRequest',
+                    arguments = {
+                      'getMoveToRefactoringFileSuggestions',
+                      {
+                        file = fname,
+                        startLine = range.start.line + 1,
+                        startOffset = range.start.character + 1,
+                        endLine = range['end'].line + 1,
+                        endOffset = range['end'].character + 1,
+                      },
+                    },
+                  }, function(_, result)
+                    ---@type string[]
+                    local files = result.body.files
+                    table.insert(files, 1, 'Enter new path...')
+                    vim.ui.select(files, {
+                      prompt = 'Select move destination:',
+                      format_item = function(f)
+                        return vim.fn.fnamemodify(f, ':~:.')
+                      end,
+                    }, function(f)
+                      if f and f:find '^Enter new path' then
+                        vim.ui.input({
+                          prompt = 'Enter move destination:',
+                          default = vim.fn.fnamemodify(fname, ':h') .. '/',
+                          completion = 'file',
+                        }, function(newf)
+                          return newf and move(newf)
+                        end)
+                      elseif f then
+                        move(f)
+                      end
+                    end)
+                  end)
+                end
+              end)
+              -- copy typescript settings to javascript
+              opts.settings.javascript = vim.tbl_deep_extend('force', {}, opts.settings.typescript, opts.settings.javascript or {})
+            end,
           },
         },
 
