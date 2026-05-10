@@ -12,4 +12,5 @@ return {
   require(submodulePath .. 'spectre'),
   require(submodulePath .. 'vim-tmux-nav'),
   require(submodulePath .. 'snacks'),
+  require(submodulePath .. 'grug-far'),
 }

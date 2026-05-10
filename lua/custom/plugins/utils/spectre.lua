@@ -5,7 +5,7 @@ return {
     cmd = 'Spectre',
     keys = {
       {
-        '<leader>s',
+        '<leader>ss',
         function()
           require('spectre').open()
         end,
