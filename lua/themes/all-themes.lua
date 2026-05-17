@@ -78,4 +78,20 @@ return {
     lazy = true,
     priority = 1000,
   },
+  {
+    'steve-lohmeyer/mars.nvim',
+    name = 'mars',
+    lazy = true,
+    priority = 1000,
+  },
+  {
+    'guilhermetk/all-hallows-eve.nvim',
+    lazy = false,
+    priority = 1000,
+  },
+  {
+    'bjarneo/vantablack.nvim',
+    lazy = false,
+    priority = 1000,
+  },
 }
