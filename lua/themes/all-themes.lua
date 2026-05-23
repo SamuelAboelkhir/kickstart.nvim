@@ -94,4 +94,12 @@ return {
     lazy = false,
     priority = 1000,
   },
+  {
+    'bjarneo/white.nvim',
+    priority = 1000,
+  },
+  {
+    'bjarneo/vantablack.nvim',
+    priority = 1000,
+  },
 }

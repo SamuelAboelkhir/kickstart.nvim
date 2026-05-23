@@ -176,6 +176,7 @@ return {
         clangd = {},
         jsonls = {},
         eslint = {},
+        ols = {},
         gopls = {
           settings = {
             gopls = {
