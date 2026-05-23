@@ -1,1 +1,0 @@
-/home/blackdovah/.config/omarchy/current/theme/mycolorscheme.lua
