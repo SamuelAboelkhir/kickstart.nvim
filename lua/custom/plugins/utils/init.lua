@@ -13,4 +13,5 @@ return {
   require(submodulePath .. 'vim-tmux-nav'),
   require(submodulePath .. 'snacks'),
   require(submodulePath .. 'grug-far'),
+  require(submodulePath .. 'present'),
 }
