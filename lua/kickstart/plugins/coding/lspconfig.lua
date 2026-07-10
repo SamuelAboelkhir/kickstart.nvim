@@ -176,6 +176,7 @@ return {
         clangd = {},
         jsonls = {},
         eslint = {},
+        yamlls = {},
         ols = {},
         gopls = {
           settings = {
@@ -239,12 +240,15 @@ return {
         -- rust_analyzer = {},
         -- emmet_ls = {},
         -- zls = {},
-        -- phpactor = {
-        --   init_options = {
-        --     ['language_server_phpstan.enabled'] = false,
-        --     ['language_server_psalm.enabled'] = false,
-        --   },
-        -- },
+        phpactor = {
+          root_dir = function(bufnr, on_dir)
+            on_dir(vim.fn.getcwd())
+          end,
+          init_options = {
+            ['language_server_phpstan.enabled'] = false,
+            ['language_server_psalm.enabled'] = false,
+          },
+        },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:

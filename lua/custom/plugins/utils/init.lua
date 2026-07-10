@@ -14,4 +14,5 @@ return {
   require(submodulePath .. 'snacks'),
   require(submodulePath .. 'grug-far'),
   require(submodulePath .. 'present'),
+  require(submodulePath .. 'opencode'),
 }
