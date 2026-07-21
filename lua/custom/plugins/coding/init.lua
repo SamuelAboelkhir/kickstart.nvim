@@ -9,4 +9,5 @@ return {
   require(submodulePath .. 'lazygit'),
   require(submodulePath .. 'visual_multi'),
   -- require (submodulePath .. '.treesiter.lua'),
+  require(submodulePath .. 'gitlab'),
 }

@@ -17,6 +17,7 @@ return {
         { '<leader>f', group = '[F]ind' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>g', group = '[G]it Hunk', mode = { 'n', 'v' } },
+        { '<leader>gl', group = '[G]it Lab', mode = { 'n', 'v' } },
         { '<leader>d', group = '[D]iagnostics' },
         { '<leader>s', group = '[S]earch and replace', mode = { 'n', 'v' } },
         { 'gr', group = '[L]sp' },
